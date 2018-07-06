@@ -27,7 +27,7 @@ return ctx.reply('Привет, '+ctx.from.first_name+' '+ctx.from.last_name+'!�
 .then(()=>ctx.reply('С чего начнем?'));});
 
 bot.on('text',ctx=>{let cmd=ctx.message.text.toLowerCase();
-if(cmd=='1'){return ctx.reply('Минуточку.').then(()=>{getWeather(function(err,ret){ctx.reply(ret);});});}
+if(cmd=='1'){return ctx.reply('Минуточку.').then(()=>{getWeather(0,function(err,ret){ctx.reply(ret);});});}
                     
 return ctx.reply(cmd);});
 bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.'));
