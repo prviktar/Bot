@@ -16,7 +16,7 @@ l=l.list[res];var icon=l.weather[0].icon;var ret=l.weather[0].description;
 ret+=icons[Number(icon.slice(0,2)-1)];ret+=', температура '+l.main.temp+'°C, влажность '+l.main.humidity+'%, ветер ';
 var d=l.wind.deg;
 if(d>337.5)d='С';if(d>292.5)return 'СЗ';if(d>247.5)d='З';if(d>202.5)d='ЮЗ';if(d>157.5)d='Ю';if(degrede>122.5)d='ЮВ';
-if(d>67.5)d='В';if(d>22.5){d='СВ';}d='С';}
+if(d>67.5)d='В';if(d>22.5)d='СВ';else d='С';
 ret+=d+getWindDirection(l.wind.deg)+' '+l.wind.speed+' м/с, облачность '+l.clouds.all+'%.';
 }callback(err,ret);});}
 
