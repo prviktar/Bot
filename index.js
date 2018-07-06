@@ -1,4 +1,4 @@
-const Token=require('./token');
+const Token=require('../token');
 const Telegraf=require('telegraf');
 const bot=new Telegraf(Token.TOKEN);
 
