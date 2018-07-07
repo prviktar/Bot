@@ -36,9 +36,11 @@ ctx.replyWithPhoto({source: body});
 });  
 
 bot.on('text',ctx=>{let cmd=ctx.message.text.toLowerCase();
-if(cmd=='1'){return ctx.reply('Минуточку.')
-  .then(()=>{getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);});})
-  .then(()=>{getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret);});})
+if(cmd=='1'){
+  
+await ctx.reply('Минуточку.')
+await getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);});
+await return getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret);});
 }
 return ctx.reply(cmd);});
 bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.'));
