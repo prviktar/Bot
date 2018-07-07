@@ -16,7 +16,7 @@ l=w.list[res];var icon=l.weather[0].icon;var ret=l.weather[0].description;ret+=i
 ret+=', температура '+l.main.temp+'°C, влажность '+l.main.humidity+'%, ветер ';var d=l.wind.deg;
 if(d>337.5)ret+='С';else if(d>292.5)ret+='СЗ';else if(d>247.5)ret+='З';else if(d>202.5)ret+='ЮЗ';
 else if(d>157.5)ret+='Ю';else if(d>122.5)ret+='ЮВ';else if(d>67.5)ret+='В';else if(d>22.5)ret+='СВ';else ret+='С';
-ret+=' '+l.wind.speed+' м/с, облачность '+l.clouds.all+'%.';}callback(err,ret);});}
+ret+=' '+l.wind.speed+' м/с, облачность '+l.clouds.all+'%.';}callback(ret);});}
 
 bot.start((ctx)=>{console.log('Пользователь:',ctx.from.first_name+' '+ctx.from.last_name);
 return ctx.reply('Привет, '+ctx.from.first_name+' '+ctx.from.last_name+'!👋')
