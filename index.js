@@ -25,8 +25,8 @@ return ctx.reply('Привет, '+ctx.from.first_name+' '+ctx.from.last_name+'!�
 .then(()=>ctx.reply('С чего начнем?'));});
 
 bot.command('cam',ctx=>{
-var url='http://192.168.1.12/snap.jpg';request(url,function(error,response,body){
-console.log(body);
+var url='http://www.belapb.by/images/president_govby.png';request(url,function(error,response,body){
+console.log(body);console.log(response);
 });
                                                
                                                
