@@ -25,11 +25,11 @@ return ctx.reply('Привет, '+ctx.from.first_name+' '+ctx.from.last_name+'!�
 .then(()=>ctx.reply('С чего начнем?'));});
 
 bot.command('cam',ctx=>{
-var data=Stream();
 var url='http://192.168.1.12/snap.jpg';
-request(url).pipe(data.push());
-ctx.reply('Минуточку...');
-})
+request(url,function(response){                                        
+var data=new Stream();                                                    
+response.on('data',function(chunk){data.push(chunk);});                                                                         
+response.on('end',function(){ctx.reply('Минуточку...');});
 
 bot.on('text',ctx=>{let cmd=ctx.message.text.toLowerCase();
 if(cmd=='1'){return ctx.reply('Минуточку.')
