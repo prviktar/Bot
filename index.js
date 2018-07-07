@@ -25,9 +25,10 @@ return ctx.reply('Привет, '+ctx.from.first_name+' '+ctx.from.last_name+'!�
 .then(()=>ctx.reply('С чего начнем?'));});
 
 bot.command('cam',ctx=>{
-var url='http://192.168.1.12/snap.jpg';request(url,function(error,response,body){
-ctx.replyWithPhoto(body);
-});
+let fileStream = fs.createWriteStream('image.jpg');
+var url='http://192.168.1.12/snap.jpg';request(url).pipe(fileStream)
+then(()=>{ctx.replyWithPhoto({source: fs.createReadStream('image.jpg')})})
+
 });  
 
 bot.on('text',ctx=>{let cmd=ctx.message.text.toLowerCase();
