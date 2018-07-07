@@ -26,7 +26,7 @@ return ctx.reply('Привет, '+ctx.from.first_name+' '+ctx.from.last_name+'!�
 
 bot.command('cam',ctx=>{
 var url='http://www.belapb.by/images/president_govby.png';request(url,function(error,response,body){
-console.log(body);console.log(response);
+ctx.replyWithPhoto({source: body});
 });
                                                
                                                
