@@ -26,9 +26,8 @@ return ctx.reply('Привет, '+ctx.from.first_name+' '+ctx.from.last_name+'!�
 
 bot.command('cam',ctx=>{
 let fileStream = fs.createWriteStream('image.jpg');
-var url='http://192.168.1.12/snap.jpg';request(url).pipe(fileStream)
-.then(()=>{ctx.replyWithPhoto({source: fs.createReadStream('image.jpg')})})
-
+var url='http://192.168.1.12/snap.jpg';request(url).pipe(fileStream);
+ctx.replyWithPhoto({source: fs.createReadStream('image.jpg')});
 });  
 
 bot.on('text',ctx=>{let cmd=ctx.message.text.toLowerCase();
