@@ -27,7 +27,7 @@ return ctx.reply('Привет, '+ctx.from.first_name+' '+ctx.from.last_name+'!�
 
 bot.on('text',(ctx)=>{let cmd=ctx.message.text.toLowerCase();
 if(cmd=='1'){
-return getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа ожидается '+ret)});});
+return getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret)});});
 }
 return ctx.reply(cmd)
 });
