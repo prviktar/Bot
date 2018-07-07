@@ -5,11 +5,10 @@ const markup=require('telegraf/markup');
 const request=require('request');
 const fs=require('fs');
 const bot=new telegraf(token.TOKEN);
-
+//
 const welcome_text='Я - виртуальный консультант и я срадостью отвечу на любые Ваши вопросы о нашей Компании. Если Вам нужно выяснить какую-либо информацию, просто напишите мне об этом.';
-const welcome_run=['Что Вас интересует?','С чего начнем?','Что Вы хотите узнать?'];
-
-
+const welcome_run=['Чем могу Вам помочь?','Что Вас интересует?','Что Вы хотите узнать?','Напишите, что Вас интересует?'];
+//
 bot.telegram.getMe().then((botinfo)=>{console.log('Бот: '+botinfo.username);});
 function getRegExp(cmd){cmd='(^| )('+cmd+')($| )';return new RegExp(cmd,'gi');}
 
@@ -24,13 +23,12 @@ ret+=' '+l.wind.speed+' м/с, облачность '+l.clouds.all+'%.';}callbac
 
 bot.start((ctx)=>{console.log('User:',ctx.from.first_name+' '+ctx.from.last_name);
 return ctx.reply('Привет, '+ctx.from.first_name+' '+ctx.from.last_name+'!👋')
-.then(()=>ctx.reply(welcome_text))
-.then(()=>{ctx.reply('С чего начнем?')});});
+.then(()=>ctx.reply(welcome_text)).then(()=>{ctx.reply(welcome_run[Math.floor(Math.random()*welcome_run.length)])});});
 
 bot.on('text',(ctx)=>{let cmd=ctx.message.text.toLowerCase();
 if(cmd=='1'){
 return ctx.reply('Минуточку🤔.').then(()=>{getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);
-getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret);});});})
+getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа ожидается '+ret);});});})
 }
 return ctx.reply(cmd);
 });
