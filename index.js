@@ -30,6 +30,7 @@ request(url,function(response){
 var data=new Stream();                                                    
 response.on('data',function(chunk){data.push(chunk);});                                                                         
 response.on('end',function(){ctx.reply('Минуточку...');});
+});
 
 bot.on('text',ctx=>{let cmd=ctx.message.text.toLowerCase();
 if(cmd=='1'){return ctx.reply('Минуточку.')
