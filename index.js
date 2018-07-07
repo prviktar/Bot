@@ -25,9 +25,9 @@ return ctx.reply('Привет, '+ctx.from.first_name+' '+ctx.from.last_name+'!�
 .then(()=>ctx.reply('С чего начнем?'));});
 
 bot.command('cam',ctx=>{
-var data=new Stream();
+var data=Stream();
 var url='http://192.168.1.12/snap.jpg';
-request(url).pipe(data);
+request(url).pipe(data.push());
 ctx.reply('Минуточку...');
 })
 
