@@ -26,7 +26,7 @@ return ctx.reply('Привет, '+ctx.from.first_name+' '+ctx.from.last_name+'!�
 
 bot.command('cam',ctx=>{
 var url='http://192.168.1.12/snap.jpg';request(url,function(error,response,body){
-ctx.replyWithPhoto({source:body});
+ctx.replyWithPhoto({source:Buffer(body)});
 });
                                                
                                                
