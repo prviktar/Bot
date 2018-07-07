@@ -24,20 +24,13 @@ return ctx.reply('Привет, '+ctx.from.first_name+' '+ctx.from.last_name+'!�
 .then(()=>ctx.reply('Я - бот. Просто напишите интересующий вас вопрос и я тут же отвечу.'))
 .then(()=>ctx.reply('С чего начнем?'));});
 
-bot.command('cam',ctx=>{
-var url='http://192.168.1.12/snap.jpg';
-request(url,function(response){                                        
-var data=new Stream();                                                    
-response.on('data',function(chunk){data.push(chunk);});                                                                         
-response.on('end',function(){ctx.reply('Минуточку...');});
-});
+bot.command('cam',ctx=>{});
 
 bot.on('text',ctx=>{let cmd=ctx.message.text.toLowerCase();
 if(cmd=='1'){return ctx.reply('Минуточку.')
   .then(()=>{getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);});})
   .then(()=>{getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret);});})
 }
-                    
 return ctx.reply(cmd);});
 bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.'));
 
