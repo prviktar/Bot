@@ -19,7 +19,7 @@ request(url,function(err,response,body){if(err){var ret='Сервис погод
 l=w.list[res];var icon=l.weather[0].icon;var ret=icons[Number(icon.slice(0,2)-1)]+l.weather[0].description;
 ret+=', температура '+l.main.temp+'°C, влажность '+l.main.humidity+'%, ветер ';var d=l.wind.deg;
 if(d>337.5)ret+='⬇️';else if(d>292.5)ret+='↘️';else if(d>247.5)ret+='➡️';else if(d>202.5)ret+='↗️';
-else if(d>157.5)ret+='⬆️';else if(d>122.5)ret+='↖️';else if(d>67.5)ret+='⬅️';else if(d>22.5)ret+='↙️';else if(d>0) ret+='⬇️';
+else if(d>157.5)ret+='⬆️';else if(d>122.5)ret+='↖️';else if(d>67.5)ret+='⬅️';else if(d>22.5)ret+='↙️';else if(d>0) ret+='⬇️';else ret+='';
 ret+=l.wind.speed+' м/с', облачность '+l.clouds.all+'%.'}callback(err,ret)})}
 
 bot.start((ctx)=>{console.log('User:',ctx.from.first_name+' '+ctx.from.last_name);
