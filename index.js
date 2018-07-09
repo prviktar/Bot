@@ -32,7 +32,7 @@ return getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);getWeather(
 }
 return ctx.reply(cmd)
 });
-bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста😞.'));
+bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.😞'));
 
 bot.use(session());
 bot.startPolling();
