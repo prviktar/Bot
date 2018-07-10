@@ -30,7 +30,7 @@ ret+=l.wind.speed+' м/с, облачность '+l.clouds.all+'%.'}callback(err
 bot.start((ctx)=>{console.log('User:',ctx.from.first_name+' '+ctx.from.last_name);
 return ctx.reply(welcome_hi[Math.floor(Math.random()*welcome_hi.length)]+', '+ctx.from.first_name+' '+ctx.from.last_name+'!👋')
 .then(()=>ctx.reply(welcome_text)).then(()=>{ctx.reply(welcome_run[Math.floor(Math.random()*welcome_run.length)],
-markup.keyboard([Помощь]))})});
+markup.keyboard(['Помощь']))})});
 
 bot.on('text',(ctx)=>{let cmd=ctx.message.text.toLowerCase();
 for(var i in replies){
