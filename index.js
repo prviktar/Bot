@@ -40,7 +40,7 @@ for(var i in replies){
     }
 }
 console.log(ctx.from.first_name+' '+ctx.from.last_name+'->'+ctx.message.text);
-return ctx.reply(error_text[Math.Floor(Math.random()*error_text.length)]);
+return ctx.reply(error_text[Math.floor(Math.random()*error_text.length)]);
 });
 bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.😞'));
 bot.use(session());
