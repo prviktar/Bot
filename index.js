@@ -31,6 +31,7 @@ return ctx.reply(welcome_hi[Math.floor(Math.random()*welcome_hi.length)]+', '+ct
 .then(()=>ctx.reply(welcome_text)).then(()=>{ctx.reply(welcome_run[Math.floor(Math.random()*welcome_run.length)])})});
 
 bot.on('text',(ctx)=>{let cmd=ctx.message.text.toLowerCase();
+console.log(ctx.from.first_name+' '+ctx.from.last_name+'->'+ctx.message.text);
 for(var i in replies){
     if(cmd.search(getRegExp(replies[i].text))>-1){
     	var r=replies[i].value;if(typeof r=='object')r=r[Math.floor(Math.random()*r.length)];
@@ -40,7 +41,6 @@ for(var i in replies){
     	else return replyMethod(r).then(()=>{ctx.reply(reply_text[Math.floor(Math.random()*reply_text.length)])});
     }
 }
-console.log(ctx.from.first_name+' '+ctx.from.last_name+'->'+ctx.message.text);
 return ctx.reply(error_text[Math.floor(Math.random()*error_text.length)]);
 });
 bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.😞'));
