@@ -3,17 +3,29 @@ const telegraf=require('telegraf');
 const session=require('telegraf/session');
 const markup=require('telegraf/markup');
 const request=require('request');
-const fs=require('fs');
 const bot=new telegraf(token.TOKEN);
+const Stage=require('telegraf/stage');
+const Scene=require('telegraf/scenes/base');
+const {enter,leave}=Stage;
+const fs=require('fs');
+const nodemailer=require('nodemailer'); 
 //
 const welcome_hi=['Привет','Здраствуйте','Приветствую Вас','Добро пожаловать'];
 const welcome_text='Я с радостью отвечу на любые вопросы о нашей Компании. Если Вам нужно получить какую-либо информацию, просто напишите мне об этом.';
 const welcome_run=['Чем могу Вам помочь?','Что Вас интересует?','Что Вы хотите узнать?'];
 const reply_text=['Хотите что-то еще узнать?'];
-const error_text=['Не могу понять, что вы имели ввиду.','Можете сказать то же самое другими словами?','Не понял вас.😞','Сформулируйте Ваш вопрос иначе.'];
+const error_text=['Не могу понять, что Вы имели ввиду.','Можете сказать то же самое другими словами?','Не понял Вас.😞','Сформулируйте Ваш вопрос иначе.'];
 
 const replies=require('./replies');
 //
+const feedback=new Scene('feedback');
+feedback.enter((ctx)=>ctx.reply('Напишите свой отзыв о моей работе, и я перешлю сообщение своим создателям.📩'
+,markup.keyboard(['Отмена']).oneTime().resize().extra()));
+feedback.hears('Отмена',(ctx)=>{ctx.reply('Буду рад получить Ваш отзыв в любое время!😊');ctx.scene.leave()});
+feedback.on('text',(ctx)=>{ctx.reply('Спасибо за Ваш отзыв!🤗');ctx.scene.leave()});
+
+const stage=new Stage([feedback],{ttl:300});
+
 bot.telegram.getMe().then((botinfo)=>{console.log('Бот: '+botinfo.username)});
 function getRegExp(cmd){cmd='(^| )('+cmd+')($| )';return new RegExp(cmd,'gi')}
 
@@ -45,6 +57,8 @@ for(var i in replies){
 }
 return ctx.reply(error_text[Math.floor(Math.random()*error_text.length)]);
 });
+bot.command('feedback',enter('feedback'));
 bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.😞'));
 bot.use(session());
+bot.use(stage.middleware());
 bot.startPolling();
