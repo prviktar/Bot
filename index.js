@@ -11,7 +11,6 @@ const welcome_text='Я с радостью отвечу на любые Ваши
 const welcome_run=['Чем могу Вам помочь?','Что Вас интересует?','Что Вы хотите узнать?'];
 const reply_text=['Хотите что-то еще узнать?'];
 const error_text=['Не могу понять, что вы имели ввиду.','Можете сказать то же самое другими словами?','Не понял вас.😞','Сформулируйте Ваш вопрос иначе.'];
-const support_text='📌Используйте команду /support для связи с нашими специалистами.';
 
 const replies=require('./replies');
 //
@@ -29,8 +28,7 @@ ret+=l.wind.speed+' м/с, облачность '+l.clouds.all+'%.'}callback(err
 
 bot.start((ctx)=>{console.log('User:',ctx.from.first_name+' '+ctx.from.last_name);
 return ctx.reply(welcome_hi[Math.floor(Math.random()*welcome_hi.length)]+', '+ctx.from.first_name+' '+ctx.from.last_name+'!👋')
-.then(()=>ctx.reply(welcome_text)).then(()=>{ctx.reply(welcome_run[Math.floor(Math.random()*welcome_run.length)],
-markup.keyboard(['Помощь']))})});
+.then(()=>ctx.reply(welcome_text)).then(()=>{ctx.reply(welcome_run[Math.floor(Math.random()*welcome_run.length)])})});
 
 bot.on('text',(ctx)=>{let cmd=ctx.message.text.toLowerCase();
 for(var i in replies){
@@ -43,7 +41,7 @@ for(var i in replies){
     }
 }
 console.log(ctx.from.first_name+' '+ctx.from.last_name+'->'+ctx.message.text);
-return ctx.reply(error_text[Math.floor(Math.random()*error_text.length)]).then(()=>{ctx.reply(support_text)});
+return ctx.reply(error_text[Math.floor(Math.random()*error_text.length)]);
 });
 bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.😞'));
 bot.use(session());
