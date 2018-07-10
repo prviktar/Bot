@@ -7,7 +7,7 @@ const fs=require('fs');
 const bot=new telegraf(token.TOKEN);
 //
 const welcome_hi=['Привет','Здраствуйте','Приветствую Вас','Добро пожаловать'];
-const welcome_text='Я с радостью отвечу на любые Ваши вопросы о нашей Компании. Если Вам нужно получить какую-либо информацию, просто напишите мне об этом.';
+const welcome_text='Я с радостью отвечу на любые вопросы о нашей Компании. Если Вам нужно получить какую-либо информацию, просто напишите мне об этом.';
 const welcome_run=['Чем могу Вам помочь?','Что Вас интересует?','Что Вы хотите узнать?'];
 const reply_text=['Хотите что-то еще узнать?'];
 const error_text=['Не могу понять, что вы имели ввиду.','Можете сказать то же самое другими словами?','Не понял вас.😞','Сформулируйте Ваш вопрос иначе.'];
@@ -28,17 +28,14 @@ ret+=l.wind.speed+' м/с, облачность '+l.clouds.all+'%.'}callback(err
 
 bot.start((ctx)=>{console.log('User:',ctx.from.first_name+' '+ctx.from.last_name);
 return ctx.reply(welcome_hi[Math.floor(Math.random()*welcome_hi.length)]+', '+ctx.from.first_name+' '+ctx.from.last_name+'!👋')
-.then(()=>ctx.reply(welcome_text)).then(()=>{ctx.reply(welcome_run[Math.floor(Math.random()*welcome_run.length)])})});
+.then(()=>ctx.reply(welcome_text)).then(()=>{ctx.reply(welcome_run[Math.floor(Math.random()*welcome_run.length)]
+,markup.keyboard(['Помощь']).oneTime().resize().extra()                                                      
+)})});
 
 bot.on('text',(ctx)=>{let cmd=ctx.message.text.toLowerCase();
 console.log(ctx.from.first_name+' '+ctx.from.last_name+'->'+ctx.message.text);
 for(var i in replies){
     if(cmd.search(getRegExp(replies[i].text))>-1){
-if(i=='firm'){
-ctx.reply('1 ',markup.keyboard([['Мозырь','Калинковичи'],['Минск','Гомель','Пинск'],['Бобруйск','Светлогорск']]).oneTime().resize().extra())
-}
-        
-        
     	var r=replies[i].value;if(typeof r=='object')r=r[Math.floor(Math.random()*r.length)];
     	if(i=='weather'){return getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret)})})}                                                
     	var replyMethod={text:ctx.reply,document:ctx.replyWithDocument,photo:ctx.replyWithPhoto}[replies[i].type];
