@@ -35,7 +35,7 @@ console.log(ctx.from.first_name+' '+ctx.from.last_name+'->'+ctx.message.text);
 for(var i in replies){
     if(cmd.search(getRegExp(replies[i].text))>-1){
 if(i=='firm'){
-ctx.reply(' ',markup.keyboard([['Мозырь','Калинковичи'],['Минск','Гомель','Пинск'],['Бобруйск','Светлогорск']]).oneTime().resize().extra())
+ctx.reply('1 ',markup.keyboard([['Мозырь','Калинковичи'],['Минск','Гомель','Пинск'],['Бобруйск','Светлогорск']]).oneTime().resize().extra())
 }
         
         
