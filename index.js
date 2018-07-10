@@ -41,24 +41,18 @@ ret+=l.wind.speed+' м/с, облачность '+l.clouds.all+'%.'}callback(err
 bot.start((ctx)=>{console.log('User:',ctx.from.first_name+' '+ctx.from.last_name);
 return ctx.reply(welcome_hi[Math.floor(Math.random()*welcome_hi.length)]+', '+ctx.from.first_name+' '+ctx.from.last_name+'!👋')
 .then(()=>ctx.reply(welcome_text)).then(()=>{ctx.reply(welcome_run[Math.floor(Math.random()*welcome_run.length)]
-,markup.keyboard(['Помощь']).oneTime().resize().extra()                                                      
-)})});
+,markup.keyboard(['Помощь']).oneTime().resize().extra())})});
 
-bot.on('text',(ctx)=>{let cmd=ctx.message.text.toLowerCase();
-console.log(ctx.from.first_name+' '+ctx.from.last_name+'->'+ctx.message.text);
-for(var i in replies){
-    if(cmd.search(getRegExp(replies[i].text))>-1){
-    	var r=replies[i].value;if(typeof r=='object')r=r[Math.floor(Math.random()*r.length)];
-    	if(i=='weather'){return getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret)})})}                                                
-    	var replyMethod={text:ctx.reply,document:ctx.replyWithDocument,photo:ctx.replyWithPhoto}[replies[i].type];
-        if(replies[i].reply==0)return replyMethod(r);
-    	else return replyMethod(r).then(()=>{ctx.reply(reply_text[Math.floor(Math.random()*reply_text.length)])});
+bot.on('text',(ctx)=>{let cmd=ctx.message.text.toLowerCase();console.log(ctx.from.first_name+' '+ctx.from.last_name+'->'+ctx.message.text);
+for(var i in replies){if(cmd.search(getRegExp(replies[i].text))>-1){
+    var r=replies[i].value;if(typeof r=='object')r=r[Math.floor(Math.random()*r.length)];
+    if(i=='weather'){return getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret)})})}                                                
+    var replyMethod={text:ctx.reply,document:ctx.replyWithDocument,photo:ctx.replyWithPhoto}[replies[i].type];
+    if(replies[i].reply==0)return replyMethod(r);
+    else return replyMethod(r).then(()=>{ctx.reply(reply_text[Math.floor(Math.random()*reply_text.length)])});
     }
 }
 return ctx.reply(error_text[Math.floor(Math.random()*error_text.length)]);
 });
-bot.command('feedback',enter('feedback'));
-bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.😞'));
-bot.use(session());
-bot.use(stage.middleware());
-bot.startPolling();
+bot.command('feedback',enter('feedback'));bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.😞'));
+bot.use(session());bot.use(stage.middleware());bot.startPolling();
