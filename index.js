@@ -33,10 +33,10 @@ return ctx.reply(welcome_hi[Math.floor(Math.random()*welcome_hi.length)]+', '+ct
 bot.on('text',(ctx)=>{let cmd=ctx.message.text.toLowerCase();
 for(var i in replies){
     if(cmd.search(getRegExp(replies[i].text))>-1){
-    	var r=replies[i].value;if(typeof r=='object')r=r[Math.Floor(Math.random()*r.length)];
+    	var r=replies[i].value;if(typeof r=='object')r=r[Math.floor(Math.random()*r.length)];
     	if(i=='weather'){return getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret)})})}                                                
     	var replyMethod={text:ctx.reply,document:ctx.replyWithDocument,photo:ctx.replyWithPhoto}[replies[i].type];
-    	return replyMethod(r).then(()=>{ctx.reply(reply_text[Math.Floor(Math.random()*reply_text.length)])});
+    	return replyMethod(r).then(()=>{ctx.reply(reply_text[Math.floor(Math.random()*reply_text.length)])});
     }
 }
 console.log(ctx.from.first_name+' '+ctx.from.last_name+'->'+ctx.message.text);
