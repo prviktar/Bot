@@ -20,7 +20,7 @@ const error_text=['Не могу понять, что Вы имели ввиду
 const replies=require('./replies');
 const feedback=new Scene('feedback');
 feedback.enter((ctx)=>ctx.reply('Напишите Ваши пожелания, замечания или вопросы, и я перешлю их своим создателям.📩'));
-feedback.hears(/отмена/gi,(ctx)=>{ctx.reply('Буду рад получить пожелания, замечания или вопросы от Вас в любое время!😊');ctx.scene.leave()});
+feedback.hears(/отмена/gi,(ctx)=>{ctx.reply('Буду рад передать пожелания, замечания или вопросы от Вас в любое время!😊');ctx.scene.leave()});
 feedback.on('text',(ctx)=>{ctx.reply('Спасибо! Вам ответят в ближайшее время.🤗');ctx.scene.leave()});
 
 const stage=new Stage([feedback],{ttl:300});bot.command('feedback',enter('feedback'));
@@ -43,7 +43,7 @@ function reply(ctx,i,callback){var r=replies[i].value;if(typeof r==='object')r=r
 if(replies[i].type==='photo'){var rr={caption:replies[i].caption};r={source:fs.createReadStream(r)}}
 else if(replies[i].type==='document'){var rr={caption:replies[i].caption};r={source:fs.createReadStream(r)}}
 else if(replies[i].type==='location'){var rr=replies[i].longitude;r=replies[i].latitude}
-if(i=='weather'){return getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret)})})}                                            
+if(i==='weather'){return getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret)})})}                                            
 var replyMethod={text:ctx.reply,document:ctx.replyWithDocument,photo:ctx.replyWithPhoto,location:ctx.replyWithLocation}[replies[i].type];
 if(replies[i].reply==='0')return replyMethod(r,rr);
 else return replyMethod(r,rr).then(()=>{ctx.reply(reply_text[Math.floor(Math.random()*reply_text.length)])});}
