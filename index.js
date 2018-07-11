@@ -46,15 +46,15 @@ return ctx.reply(welcome_hi[Math.floor(Math.random()*welcome_hi.length)]+' '+ctx
 ,markup.keyboard(['Помощь']).oneTime().resize().extra())})});
 
 bot.on('text',(ctx)=>{let cmd=ctx.message.text.toLowerCase();console.log(ctx.from.first_name+' '+ctx.from.last_name+'->'+ctx.message.text);
-for(var i in replies){if(cmd.search(getRegExp(replies[i].text))>-1){
-    var r=replies[i].value;if(typeof r=='object')r=r[Math.floor(Math.random()*r.length)];
-    if(replies[i].type=='photo')r={source:fs.createReadStream(r)}
-    else if(replies[i].type=='document')r={source:fs.createReadStream(r)}
-    else if(replies[i].type=='location')r={lat:replies[i].lat, lon:replies[i].lon}
+for(var i in replies){if(cmd.search(getRegExp(replies[i].text))>-1||i===cmd){
+    var r=replies[i].value;if(typeof r==='object')r=r[Math.floor(Math.random()*r.length)];
+    if(replies[i].type==='photo')r={source:fs.createReadStream(r)}
+    else if(replies[i].type==='document')r={source:fs.createReadStream(r)}
+    else if(replies[i].type==='location')r={lat:replies[i].lat, lon:replies[i].lon}
     
     if(i=='weather'){return getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret)})})}                                                
     var replyMethod={text:ctx.reply(r),document:ctx.replyWithDocument(r),photo:ctx.replyWithPhoto(r),sticker:ctx.replyWithSticker(r),location:ctx.replyWithLocation(r)}[replies[i].type];
-    if(replies[i].reply=='0')return replyMethod;
+    if(replies[i].reply==='0')return replyMethod;
     else 
         return replyMethod.then(()=>{ctx.reply(reply_text[Math.floor(Math.random()*reply_text.length)])});
     
