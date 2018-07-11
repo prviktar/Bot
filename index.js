@@ -53,11 +53,10 @@ for(var i in replies){if(cmd.search(getRegExp(replies[i].text))>-1||i===cmd){
     else if(replies[i].type==='location')r={lat:replies[i].lat, lon:replies[i].lon}
     
     if(i=='weather'){return getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret)})})}                                                
-    var replyMethod={text:ctx.reply(r),document:ctx.replyWithDocument(r),photo:ctx.replyWithPhoto(r),sticker:ctx.replyWithSticker(r),location:ctx.replyWithLocation(r)}[replies[i].type];
+    var replyMethod={text:ctx.reply(r),document:ctx.replyWithDocument(r),photo:ctx.replyWithPhoto(r),location:ctx.replyWithLocation(r)}[replies[i].type];
     if(replies[i].reply==='0')return replyMethod;
     else 
         return replyMethod.then(()=>{ctx.reply(reply_text[Math.floor(Math.random()*reply_text.length)])});
-    
     }
 }
 return ctx.reply(error_text[Math.floor(Math.random()*error_text.length)]);
