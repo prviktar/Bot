@@ -10,7 +10,7 @@ const {enter,leave}=Stage;
 const fs=require('fs');
 const nodemailer=require('nodemailer'); 
 //
-const welcome_hi=['Привет','Здраствуйте','Приветствую Вас','Добро пожаловать'];
+const welcome_hi=['Привет,','Здраствуйте,','Приветствую Вас,','Добро пожаловать,'];
 const welcome_text='Я с радостью отвечу на любые вопросы о нашей Компании. Если Вам нужно получить какую-либо информацию, просто напишите мне об этом.';
 const welcome_run=['Чем могу Вам помочь?','Что Вас интересует?','Что Вы хотите узнать?'];
 const reply_text=['Хотите что-то еще узнать?'];
@@ -19,13 +19,15 @@ const error_text=['Не могу понять, что Вы имели ввиду
 const replies=require('./replies');
 //
 const feedback=new Scene('feedback');
-feedback.enter((ctx)=>ctx.reply('Напишите свой отзыв о моей работе, и я перешлю сообщение своим создателям.📩'
+feedback.enter((ctx)=>ctx.reply('Напишите Ваши пожелания, замечания или вопросы, и я перешлю их своим создателям.📩'
 ,markup.keyboard(['Отмена']).oneTime().resize().extra()));
-feedback.hears('Отмена',(ctx)=>{ctx.reply('Буду рад получить Ваш отзыв в любое время!😊');ctx.scene.leave()});
-feedback.on('text',(ctx)=>{ctx.reply('Спасибо за Ваш отзыв!🤗');ctx.scene.leave()});
+feedback.hears(/отмена/gi,(ctx)=>{ctx.reply('Буду рад получить пожелания, замечания или вопросы от Вас в любое время!😊');ctx.scene.leave()});
+feedback.on('text',(ctx)=>{ctx.reply('Спасибо! Вам ответят в ближайшее время.🤗');ctx.scene.leave()});
 
 const stage=new Stage([feedback],{ttl:300});
-
+//
+bot.command('feedback',enter('feedback'));
+//
 bot.telegram.getMe().then((botinfo)=>{console.log('Бот: '+botinfo.username)});
 function getRegExp(cmd){cmd='(^| )('+cmd+')($| )';return new RegExp(cmd,'gi')}
 
@@ -38,21 +40,28 @@ if(d>337.5)ret+='⬇️';else if(d>292.5)ret+='↘️';else if(d>247.5)ret+='➡
 else if(d>157.5)ret+='⬆️';else if(d>122.5)ret+='↖️';else if(d>67.5)ret+='⬅️';else if(d>22.5)ret+='↙️';else if(d>0) ret+='⬇️';else ret+='';
 ret+=l.wind.speed+' м/с, облачность '+l.clouds.all+'%.'}callback(err,ret)})}
 
-bot.start((ctx)=>{console.log('User:',ctx.from.first_name+' '+ctx.from.last_name);
-return ctx.reply(welcome_hi[Math.floor(Math.random()*welcome_hi.length)]+', '+ctx.from.first_name+' '+ctx.from.last_name+'!👋')
+bot.start((ctx)=>{console.log('User: ',ctx.from.first_name+' '+ctx.from.last_name+', Id: '+ctx.from.id);
+return ctx.reply(welcome_hi[Math.floor(Math.random()*welcome_hi.length)]+' '+ctx.from.first_name+' '+ctx.from.last_name+'!👋')
 .then(()=>ctx.reply(welcome_text)).then(()=>{ctx.reply(welcome_run[Math.floor(Math.random()*welcome_run.length)]
 ,markup.keyboard(['Помощь']).oneTime().resize().extra())})});
 
 bot.on('text',(ctx)=>{let cmd=ctx.message.text.toLowerCase();console.log(ctx.from.first_name+' '+ctx.from.last_name+'->'+ctx.message.text);
 for(var i in replies){if(cmd.search(getRegExp(replies[i].text))>-1){
     var r=replies[i].value;if(typeof r=='object')r=r[Math.floor(Math.random()*r.length)];
+    if(replies[i].type=='photo')r={source:fs.createReadStream(r)}
+    else if(replies[i].type=='document')r={source:fs.createReadStream(r)}
+    else if(replies[i].type=='location')r={lat:replies[i].lat, lon:replies[i].lon}
+    
     if(i=='weather'){return getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret)})})}                                                
-    var replyMethod={text:ctx.reply,document:ctx.replyWithDocument,photo:ctx.replyWithPhoto}[replies[i].type];
-    if(replies[i].reply==0)return replyMethod(r);
-    else return replyMethod(r).then(()=>{ctx.reply(reply_text[Math.floor(Math.random()*reply_text.length)])});
+    var replyMethod={text:ctx.reply(r),document:ctx.replyWithDocument(r),photo:ctx.replyWithPhoto(r),sticker:ctx.replyWithSticker(r),location:ctx.replyWithLocation(r)}[replies[i].type];
+    if(replies[i].reply=='0')return replyMethod;
+    else 
+        return replyMethod.then(()=>{ctx.reply(reply_text[Math.floor(Math.random()*reply_text.length)])});
+    
     }
 }
 return ctx.reply(error_text[Math.floor(Math.random()*error_text.length)]);
 });
-bot.command('feedback',enter('feedback'));bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.😞'));
+
+bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.😞'));
 bot.use(session());bot.use(stage.middleware());bot.startPolling();
