@@ -23,7 +23,7 @@ feedback.enter((ctx)=>ctx.reply('Напишите Ваши пожелания, �
 feedback.hears(/отмена/gi,(ctx)=>{ctx.reply('Буду рад передать пожелания, замечания или вопросы от Вас в любое время!😊');ctx.scene.leave()});
 feedback.on('text',(ctx)=>{ctx.reply('Спасибо! Вам ответят в ближайшее время.🤗');ctx.scene.leave()});
 
-const stage=new Stage([feedback],{ttl:300});bot.command('feedback',enter('feedback'));
+const stage=new Stage([feedback],{ttl:300});
 bot.telegram.getMe().then((botinfo)=>{console.log('Бот: '+botinfo.username)});
 function getRegExp(cmd){cmd='(^| )('+cmd+')($| )';return new RegExp(cmd,'gi')}
 function getWeather(res,callback){var icons=['☀️','⛅','☁️','☁️','','','','','🌧️','🌧️','⛈️','','🌨️'];
@@ -47,7 +47,10 @@ if(i==='weather'){return getWeather(0,function(err,ret){ctx.reply('Сейчас 
 var replyMethod={text:ctx.reply,document:ctx.replyWithDocument,photo:ctx.replyWithPhoto,location:ctx.replyWithLocation}[replies[i].type];
 if(replies[i].reply==='0')return replyMethod(r,rr);
 else return replyMethod(r,rr).then(()=>{ctx.reply(reply_text[Math.floor(Math.random()*reply_text.length)])});}
+bot.use(session());bot.use(stage.middleware());
+bot.command('feedback',enter('feedback'));
 bot.on('text',(ctx)=>{let cmd=ctx.message.text.toLowerCase();console.log(ctx.from.first_name+' '+ctx.from.last_name+'->'+ctx.message.text);
 for(var i in replies){if(cmd.search(getRegExp(replies[i].text))>-1){return reply(ctx,i).then(()=>{if(typeof replies[i].next==='string'){reply(ctx,replies[i].next)}})}}
 return ctx.reply(error_text[Math.floor(Math.random()*error_text.length)])});
-bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.😞'));bot.use(session());bot.use(stage.middleware());bot.startPolling();
+bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.😞'));
+bot.startPolling();
