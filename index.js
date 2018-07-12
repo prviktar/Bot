@@ -11,11 +11,10 @@ const {enter,leave}=Stage;
 const fs=require('fs');
 const nodemailer=require('nodemailer'); 
 //
-const welcome_hi=['Привет,','Здраствуйте,','Приветствую Вас,','Добро пожаловать,'];
-const welcome_text='Я с радостью отвечу на любые вопросы о нашей Компании. Если Вам нужно получить какую-либо информацию, просто напишите мне об этом.';
-const welcome_run=['Чем могу Вам помочь?','Что Вас интересует?','Что Вы хотите узнать?'];
-const reply_text=['Хотите что-то еще узнать?'];
-const error_text=['Не могу понять, что Вы имели ввиду.','Можете сказать то же самое другими словами?','Не понял Вас.😞','Сформулируйте Ваш вопрос иначе.'];
+const w=['Привет','Здраствуйте','Приветствую Вас','Добро пожаловать'];
+const ww='Я с радостью отвечу на любые вопросы о нашей Компании. Если Вам нужно получить какую-либо информацию, просто напишите мне об этом.';
+const www=['Чем могу Вам помочь?','Что Вас интересует?','Что Вы хотите узнать?'];
+const e=['Не могу понять, что Вы имели ввиду.','Можете сказать то же самое другими словами?','Не понял Вас.😞','Сформулируйте Ваш вопрос иначе.'];
 
 const replies=require('./replies');
 const feedback=new Scene('feedback');
@@ -36,8 +35,8 @@ else if(d>157.5)ret+='⬆️';else if(d>122.5)ret+='↖️';else if(d>67.5)ret+=
 ret+=l.wind.speed+' м/с, облачность '+l.clouds.all+'%.'}callback(err,ret)})}
 
 bot.start((ctx)=>{console.log('User:',ctx.from.first_name+' '+ctx.from.last_name+', Id: '+ctx.from.id);
-return ctx.reply(welcome_hi[Math.floor(Math.random()*welcome_hi.length)]+' '+ctx.from.first_name+' '+ctx.from.last_name+'!👋')
-.then(()=>ctx.reply(welcome_text)).then(()=>{ctx.reply(welcome_run[Math.floor(Math.random()*welcome_run.length)])})});
+return ctx.reply(w[Math.floor(Math.random()*w.length)]+', '+ctx.from.first_name+' '+ctx.from.last_name+'!👋')
+.then(()=>ctx.reply(ww)).then(()=>{ctx.reply(www[Math.floor(Math.random()*www.length)])})});
 
 function reply(ctx,i,callback){var r=replies[i].value;if(typeof r==='object')r=r[Math.floor(Math.random()*r.length)];
 if(replies[i].type==='photo'){var rr={caption:replies[i].caption};r={source:fs.createReadStream(r)}}
@@ -46,11 +45,10 @@ else if(replies[i].type==='location'){var rr=replies[i].longitude;r=replies[i].l
 if(i==='weather'){return getWeather(0,function(err,ret){ctx.reply('Сейчас '+ret);getWeather(1,function(err,ret){ctx.reply('В ближайшие три часа будет '+ret)})})}                                            
 var replyMethod={text:ctx.reply,document:ctx.replyWithDocument,photo:ctx.replyWithPhoto,location:ctx.replyWithLocation}[replies[i].type];
 if(replies[i].reply==='0')return replyMethod(r,rr);
-else return replyMethod(r,rr).then(()=>{ctx.reply(reply_text[Math.floor(Math.random()*reply_text.length)])});}
-bot.use(session());bot.use(stage.middleware());
-bot.command('feedback',enter('feedback'));
+else return replyMethod(r,rr).then(()=>{rrr=replies['next'].value;ctx.reply(rrr[Math.floor(Math.random()*rrr.length)])});}
+bot.use(session());bot.use(stage.middleware());bot.command('feedback',enter('feedback'));
 bot.on('text',(ctx)=>{let cmd=ctx.message.text.toLowerCase();console.log(ctx.from.first_name+' '+ctx.from.last_name+'->'+ctx.message.text);
-for(var i in replies){if(cmd.search(getRegExp(replies[i].text))>-1){return reply(ctx,i).then(()=>{if(typeof replies[i].next==='string'){reply(ctx,replies[i].next)}})}}
-return ctx.reply(error_text[Math.floor(Math.random()*error_text.length)])});
-bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.😞'));
-bot.startPolling();
+for(var i in replies){if(cmd.search(getRegExp(replies[i].text))>-1){return reply(ctx,i)
+.then(()=>{while(typeof replies[i].next==='string'){i=replies[i].next;reply(ctx,i)}})}}
+return ctx.reply(e[Math.floor(Math.random()*e.length)])});
+bot.on('message',(ctx)=>ctx.reply('Вводите только текст, пожалуйста.😞'));bot.startPolling();
